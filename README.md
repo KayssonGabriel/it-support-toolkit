@@ -9,11 +9,11 @@ O projeto utiliza um padrão de "Wrapper" em Batch (`.bat`) para contornar as Po
 ### Estrutura de Pastas
 ```text
 /
-├── Logs/              (Criada automaticamente: guarda as transcrições das execuções)
-├── WindowsRepair/     (Módulo: Reparo de Imagem do SO)
-├── NetworkRepair/     (Módulo: Redefinição da Pilha TCP/IP)
-├── PrintRepair/       (Módulo: Limpeza forçada de Spooler de Impressão)
-└── ADPolicySync/      (Módulo: Sincronização Kerberos/GPO)
+├── Logs/               (Criada automaticamente: guarda as transcrições das execuções)
+├── WindowsRepair/      (Módulo: Reparo de Imagem do SO e Integridade SFC/DISM)
+├── NetworkRepair/      (Módulo: Manutenção de DNS e Cache de Rede - Seguro para IP Fixo)
+├── PrintRepair/        (Módulo: Limpeza forçada de Spooler de Impressão)
+└── ADPolicySync/       (Módulo: Sincronização Kerberos/GPO)
 ```
 
 ---
@@ -28,7 +28,7 @@ Este guia é destinado à equipe de suporte. Nenhuma das ferramentas abaixo apag
 
 ### 🛠️ Passo 2: Escolhendo o Módulo de Reparo
 * **`WindowsRepair`:** Use para lentidão, telas azuis ou erros no Windows Update.
-* **`NetworkRepair`:** Use para falta de internet, falha em VPN ou conflito de IP. *(Requer reiniciar o PC ao final)*.
+* **`NetworkRepair`:** Use para falhas de resolução de nomes (DNS), sites que não carregam ou erros de "Servidor não encontrado". (Não altera configurações de IP Estático/Fixo).*.
 * **`PrintRepair`:** Use para documentos presos na fila de impressão que não podem ser cancelados.
 * **`ADPolicySync`:** Use para perda de acesso a pastas de rede ou falha de sincronia de senha de domínio.
 
