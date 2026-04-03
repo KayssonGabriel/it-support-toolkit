@@ -18,7 +18,7 @@ try { $ActiveIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway
 if ([string]::IsNullOrWhiteSpace($ActiveIP)) { $ActiveIP = "OFFLINE" }
 
 $ActionName = "FlushDNS-Netsh"
-$Timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+$Timestamp = Get-Date -Format 'ddMMyyyy_HHmmss'
 $LogFile = "$LogDir\${LoggedUser}_${ActionName}_${ActiveIP}_${Timestamp}.log"
 
 Start-Transcript -Path $LogFile -Append -NoClobber
