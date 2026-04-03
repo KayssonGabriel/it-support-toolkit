@@ -13,5 +13,4 @@ O projeto utiliza um padrão de "Wrapper" em Batch (`.bat`) para contornar as Po
 ├── WindowsRepair/     (Módulo: Reparo de Imagem do SO)
 ├── NetworkRepair/     (Módulo: Redefinição da Pilha TCP/IP)
 ├── PrintRepair/       (Módulo: Limpeza forçada de Spooler de Impressão)
-├── ADPolicySync/      (Módulo: Sincronização Kerberos/GPO)
-└── README.md
+└── ADPolicySync/      (Módulo: Sincronização Kerberos/GPO)
