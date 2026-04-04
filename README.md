@@ -34,7 +34,7 @@ Este guia é destinado à equipe de suporte. Nenhuma das ferramentas abaixo apag
 
 ### 🚀 Passo 3: Execução
 1. Entre na pasta do módulo escolhido.
-2. Dê um **duplo clique** no arquivo `.bat` (Ex: `Run-Repair.bat`).
+2. Dê um **duplo clique** no arquivo `.bat` (Ex: `Run-WindowsRepair.bat`).
 3. O Windows pedirá autorização (UAC). Insira as credenciais de **Administrador da TI**.
 4. A tela azul do PowerShell abrirá automaticamente. Aguarde a mensagem verde de sucesso e pressione qualquer tecla para fechar.
 
@@ -44,4 +44,4 @@ Este guia é destinado à equipe de suporte. Nenhuma das ferramentas abaixo apag
 
 Toda execução gera um log detalhado na pasta `/Logs` na raiz do projeto. Caso o incidente precise ser escalado para o Nível 3, anexe o arquivo de log ao ticket do chamado.
 
-**Padrão do Log:** `[UsuarioLogado]_[ComandoPrincipais]_[IP]_[DataHora].log`
+**Padrão do Log:** `[Usuario]_[Modulo]_[IP]_[ddMMyyyy_HHmmss].log`

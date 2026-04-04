@@ -1,4 +1,4 @@
-﻿# NetworkRepair\Repair-NetworkStack.ps1
+﻿# \NetworkRepair\Repair-NetworkStack.ps1
 
 <#
 .SYNOPSIS
@@ -8,10 +8,7 @@
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) { Write-Warning "Acesso Negado."; Start-Sleep -Seconds 5; Exit }
 
-# ------------------------------------------------------------------------
-# FALLBACK DE LOGS (Proteção contra unidades Somente-Leitura)
-# ------------------------------------------------------------------------
-$BaseDir = (Get-Item $PSScriptRoot).Parent.FullName
+$BaseDir = Split-Path -Path $PSScriptRoot -Parent
 $LogDir = Join-Path -Path $BaseDir -ChildPath "Logs"
 
 try {
@@ -44,6 +41,6 @@ catch {
 }
 finally { 
     Stop-Transcript
-    Write-Host "Log: $LogFile"
+    Write-Host "`nLog: $LogFile"
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") 
 }

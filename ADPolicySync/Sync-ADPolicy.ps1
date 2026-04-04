@@ -1,4 +1,4 @@
-﻿# ADPolicySync\Sync-ADPolicy.ps1
+﻿# \ADPolicySync\Sync-ADPolicy.ps1
 
 <#
 .SYNOPSIS
@@ -8,7 +8,7 @@
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) { Write-Warning "Acesso Negado."; Start-Sleep -Seconds 5; Exit }
 
-$BaseDir = (Get-Item $PSScriptRoot).Parent.FullName
+$BaseDir = Split-Path -Path $PSScriptRoot -Parent
 $LogDir = Join-Path -Path $BaseDir -ChildPath "Logs"
 
 try {
@@ -32,7 +32,6 @@ try {
     klist purge | Out-Null
 
     Write-Host "`n[2/2] Forcando atualizacao de Politicas de Grupo (gpupdate /force)..." -ForegroundColor Yellow
-    # CORRECAO: Sintaxe rigorosa do PowerShell para injecao de input
     "N" | gpupdate /force
 
     Write-Host "`nSincronizacao de dominio concluida!" -ForegroundColor Green
