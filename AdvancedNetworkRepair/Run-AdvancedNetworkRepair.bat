@@ -1,11 +1,11 @@
-:: \NetworkRepair\Run-NetworkRepair.bat
+:: \AdvancedNetworkRepair\Run-AdvancedNetworkRepair.bat
 
 @echo off
-set "SCRIPT_PATH=%~dp0Repair-Network.ps1"
+set "SCRIPT_PATH=%~dp0Repair-NetworkStack.ps1"
 
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (
-    echo Solicitando privilegios de Administrador para o modulo de rede...
+    echo [ALERTA] Solicitando privilegios de Administrador para MANUTENCAO AVANCADA...
     PowerShell.exe -NoProfile -Command "Start-Process PowerShell.exe -ArgumentList '-NoProfile -ExecutionPolicy Bypass -File \"%SCRIPT_PATH%\"' -Verb RunAs"
     exit /B
 )

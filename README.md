@@ -28,7 +28,7 @@ Este guia é destinado à equipe de suporte. Nenhuma das ferramentas abaixo apag
 
 ### 🛠️ Passo 2: Escolhendo o Módulo de Reparo
 * **`WindowsRepair`:** Use para lentidão, telas azuis ou erros no Windows Update.
-* **`NetworkRepair`:** Use para falhas de resolução de nomes (DNS), sites que não carregam ou erros de "Servidor não encontrado". (Não altera configurações de IP Estático/Fixo).*.
+* **`NetworkRepair`:** Use para falhas de resolução de nomes (DNS), sites que não carregam ou erros de "Servidor não encontrado". (Não altera configurações de IP Estático/Fixo).
 * **`PrintRepair`:** Use para documentos presos na fila de impressão que não podem ser cancelados.
 * **`ADPolicySync`:** Use para perda de acesso a pastas de rede ou falha de sincronia de senha de domínio.
 
