@@ -1,4 +1,4 @@
-# ADPolicySync\Sync-ADPolicy.ps1
+﻿# ADPolicySync\Sync-ADPolicy.ps1
 
 <#
 .SYNOPSIS
@@ -32,8 +32,8 @@ try {
     klist purge | Out-Null
 
     Write-Host "`n[2/2] Forcando atualizacao de Politicas de Grupo (gpupdate /force)..." -ForegroundColor Yellow
-    # Executa o gpupdate e repassa 'N' para evitar reboot caso uma politica de instalacao peca
-    echo N | gpupdate /force
+    # CORRECAO: Sintaxe rigorosa do PowerShell para injecao de input
+    "N" | gpupdate /force
 
     Write-Host "`nSincronizacao de dominio concluida!" -ForegroundColor Green
     Write-Host "Caso o problema persista, peca ao usuario para bloquear (Win+L) e desbloquear a tela." -ForegroundColor White
@@ -43,6 +43,6 @@ catch {
 }
 finally { 
     Stop-Transcript
-    Write-Host "Log: $LogFile"
+    Write-Host "`nLog: $LogFile"
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") 
 }

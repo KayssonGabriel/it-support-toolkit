@@ -1,4 +1,4 @@
-# NetworkRepair\Repair-NetworkStack.ps1
+﻿# NetworkRepair\Repair-NetworkStack.ps1
 
 <#
 .SYNOPSIS

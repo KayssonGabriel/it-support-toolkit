@@ -1,4 +1,4 @@
-# PrintRepair\Repair-PrintSpooler.ps1
+﻿# PrintRepair\Repair-PrintSpooler.ps1
 
 <#
 .SYNOPSIS

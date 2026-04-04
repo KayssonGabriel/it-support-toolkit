@@ -1,4 +1,4 @@
-# WindowsRepair\Repair-WindowsSystem.ps1
+﻿# WindowsRepair\Repair-WindowsSystem.ps1
 
 <#
 .SYNOPSIS
