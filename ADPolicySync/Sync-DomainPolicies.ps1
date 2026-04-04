@@ -1,35 +1,48 @@
-# ADPolicySync\Sync-DomainPolicies.ps1
+# ADPolicySync\Sync-ADPolicy.ps1
+
+<#
+.SYNOPSIS
+    Script para atualizacao forcada de GPO e limpeza de tickets Kerberos.
+#>
 
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) { Write-Warning "Acesso Negado."; Start-Sleep -Seconds 5; Exit }
 
-# Resolucao Dinamica de Diretorio
 $BaseDir = (Get-Item $PSScriptRoot).Parent.FullName
 $LogDir = Join-Path -Path $BaseDir -ChildPath "Logs"
-if (-not (Test-Path -Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 
 try {
-    $RawUser = (Get-CimInstance -ClassName Win32_ComputerSystem).UserName
-    if (-not [string]::IsNullOrWhiteSpace($RawUser)) { $LoggedUser = $RawUser.Split('\')[-1] } else { $LoggedUser = $env:USERNAME }
-} catch { $LoggedUser = $env:USERNAME }
-if ([string]::IsNullOrWhiteSpace($LoggedUser)) { $LoggedUser = "UnknownUser" }
+    if (-not (Test-Path -Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force -ErrorAction Stop | Out-Null }
+} catch {
+    $LogDir = Join-Path -Path $env:TEMP -ChildPath "IT_Toolkit_Logs"
+    if (-not (Test-Path -Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
+}
 
-try { $ActiveIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null } | Select-Object -First 1).IPv4Address.IPAddress } catch { $ActiveIP = $null }
-if ([string]::IsNullOrWhiteSpace($ActiveIP)) { $ActiveIP = "OFFLINE" }
+try { $LoggedUser = (Get-CimInstance Win32_ComputerSystem).UserName.Split('\')[-1] } catch { $LoggedUser = $env:USERNAME }
+try { $ActiveIP = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null } | Select-Object -First 1).IPv4Address.IPAddress } catch { $ActiveIP = "OFFLINE" }
 
-$ActionName = "GPUpdate-Klist"
 $Timestamp = Get-Date -Format 'ddMMyyyy_HHmmss'
-$LogFile = "$LogDir\${LoggedUser}_${ActionName}_${ActiveIP}_${Timestamp}.log"
+$LogFile = Join-Path -Path $LogDir -ChildPath "${LoggedUser}_ADSync_${ActiveIP}_${Timestamp}.log"
 
 Start-Transcript -Path $LogFile -Append -NoClobber
-Write-Host "Iniciando sincronizacao com o Servidor de Dominio..." -ForegroundColor Cyan
+Write-Host "Iniciando sincronizacao com Active Directory..." -ForegroundColor Cyan
 
 try {
-    Write-Host "`n[1/2] Expurgando tickets Kerberos..." -ForegroundColor Yellow
+    Write-Host "`n[1/2] Expurgando tickets Kerberos (klist purge)..." -ForegroundColor Yellow
     klist purge | Out-Null
-    Write-Host "`n[2/2] Forcando atualizacao GPO..." -ForegroundColor Yellow
-    gpupdate /force
-    Write-Host "`nSincronizacao concluida com sucesso!" -ForegroundColor Green
+
+    Write-Host "`n[2/2] Forcando atualizacao de Politicas de Grupo (gpupdate /force)..." -ForegroundColor Yellow
+    # Executa o gpupdate e repassa 'N' para evitar reboot caso uma politica de instalacao peca
+    echo N | gpupdate /force
+
+    Write-Host "`nSincronizacao de dominio concluida!" -ForegroundColor Green
+    Write-Host "Caso o problema persista, peca ao usuario para bloquear (Win+L) e desbloquear a tela." -ForegroundColor White
 }
-catch { Write-Error "Falha: $_" }
-finally { Stop-Transcript; $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") }
+catch { 
+    Write-Error "Falha: $_" 
+}
+finally { 
+    Stop-Transcript
+    Write-Host "Log: $LogFile"
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") 
+}
