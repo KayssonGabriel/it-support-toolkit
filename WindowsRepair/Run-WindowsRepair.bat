@@ -1,4 +1,4 @@
-:: WindowsRepair\Run-Repair.bat
+:: WindowsRepair\Run-WindowsRepair.bat
 
 @echo off
 :: Arquitetura Limpa: Elevacao de UAC nativa sem arquivos .vbs temporarios
