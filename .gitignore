@@ -1,1 +1,22 @@
+# C:\IT_Scripts\.gitignore
+
+# ------------------------------------------------------------------------
+# DIRETORIOS IGNORADOS
+# ------------------------------------------------------------------------
+# Ignora a pasta de logs e todo o seu conteudo (Privacidade e Auditoria)
 Logs/
+
+# ------------------------------------------------------------------------
+# ARQUIVOS DE SISTEMA E TEMPORARIOS
+# ------------------------------------------------------------------------
+# Ignora arquivos temporarios do Windows e do PowerShell
+*.tmp
+*.temp
+*.bak
+
+# Ignora cache de miniaturas do Windows Explorer
+Thumbs.db
+ehthumbs.db
+
+# Ignora arquivos de metadados de pastas do Windows
+Desktop.ini
