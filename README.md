@@ -1,5 +1,3 @@
-# /README.md
-
 <div align="center">
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=0078D7&center=true&vCenter=true&width=700&lines=%F0%9F%A7%B0+IT+Support+Toolkit;Windows+Sysadmin+Helper;Automa%C3%A7%C3%A3o+para+Suporte+N1%2FN2" alt="IT Support Toolkit" />
