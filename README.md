@@ -6,93 +6,65 @@
 
 [![Windows](https://img.shields.io/badge/Windows-0078D7?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 [![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)](https://microsoft.com/powershell)
-[![Admin Required](https://img.shields.io/badge/Requer-Administrador-red?style=for-the-badge&logo=shield&logoColor=white)]()
+![Elevação de privilégios](https://img.shields.io/badge/Requer-Administrador-red?style=for-the-badge&logo=shield&logoColor=white)
 
 <br/>
 
-> **Canivete suíço para analistas de Infraestrutura e Suporte.** > Soluções modulares para reparo de rede, sistema, drivers e backup de navegadores em ambientes corporativos.
+> **Ferramentas de reparo para analistas de infraestrutura e suporte.** <br/> Scripts modulares de rede, sistema, drivers e backup de favoritos em ambientes Windows.
 
 <br/>
 
-[🚀 Como Usar](#-como-usar) · [📂 Estrutura](#-arquitetura) · [🌐 Navegadores](#-browser-backup) · [🔧 Drivers](#-driver-management) · [🛡️ Segurança](#-segurança-e-auditoria)
+[🚀 Como usar](#como-usar) · [📂 Estrutura](#arquitetura) · [🌐 Navegadores](#navegadores) · [🔧 Drivers](#drivers) · [🔒 Logs e auditoria](#logs-e-auditoria)
 
 </div>
 
 ---
 
-## 📖 Sobre o Projeto
+## 📖 Sobre o projeto
 
-O **IT Support Toolkit** é um conjunto modular de scripts projetado para equipes de TI (NOC/Suporte). Ele foca na correção rápida de problemas comuns do Windows, utilizando um padrão de "Wrapper" em Batch (`.bat`) para elevar privilégios e executar lógica complexa em PowerShell (`.ps1`) de forma segura.
+Scripts para atendimento N1/N2 e equipes de infraestrutura Windows. Cada módulo tem um iniciador Batch (`.bat`) que solicita a elevação de privilégios e chama um script do Windows PowerShell.
 
----
+<a name="como-usar"></a>
+
+## 🚀 Como usar
+
+1. Copie a pasta do toolkit para a máquina Windows em que será feito o atendimento.
+2. Escolha o módulo na tabela e execute seu iniciador. O Windows pode pedir credenciais de administrador.
+3. Acompanhe a execução na janela e consulte a transcrição gerada ao final.
+
+<a name="arquitetura"></a>
 
 ## 📐 Arquitetura
 
-O toolkit é organizado para garantir que cada intervenção seja isolada e auditada.
+| Módulo | Iniciador | O que faz |
+| --- | --- | --- |
+| Rede | [Run-NetworkRepair.bat](NetworkRepair/Run-NetworkRepair.bat) | Limpa o cache DNS e solicita novo registro DNS, preservando a configuração de IP |
+| Rede avançada | [Run-AdvancedNetworkRepair.bat](AdvancedNetworkRepair/Run-AdvancedNetworkRepair.bat) | Libera e renova DHCP, redefine Winsock e a pilha TCP/IP |
+| Políticas de domínio | [Run-ADSync.bat](ADPolicySync/Run-ADSync.bat) | Limpa tickets Kerberos e atualiza políticas de grupo em máquinas integradas ao domínio |
+| Navegadores | [Run-BrowserBackup.bat](BrowserBackup/Run-BrowserBackup.bat) | Faz backup e restaura favoritos do Chrome e do Edge por navegador e perfil |
+| Drivers | [Run-DriverManagement.bat](DriverManagement/Run-DriverManagement.bat) | Exporta drivers via DISM para uma pasta com data e hora, ou instala os arquivos `.inf` de um backup com PnPUtil |
+| Impressão | [Run-PrintRepair.bat](PrintRepair/Run-PrintRepair.bat) | Esvazia a fila de impressão e reinicia o spooler |
+| Sistema | [Run-WindowsRepair.bat](WindowsRepair/Run-WindowsRepair.bat) | Executa os diagnósticos e reparos DISM e SFC |
 
-```text
-/
-├── Logs/                    (Criada automaticamente: auditoria e transcrições)
-├── ADPolicySync/            (Sincronização Kerberos e GPOs)
-├── AdvancedNetworkRepair/   (Redefinição profunda: Winsock, TCP/IP e IP Release/Renew (Obs.: não utilize caso possua IP fixo ou VPN configurada))
-├── BrowserBackup/           (Backup/Restauro de Favoritos Chrome/Edge)
-├── DriverManagement/        (Backup e Injeção de Drivers via DISM)
-├── NetworkRepair/           (Manutenção segura de DNS - Ideal para IP Fixo)
-├── PrintRepair/             (Limpeza de Spooler de Impressão)
-└── WindowsRepair/           (Reparo de imagem SFC e DISM)
-```
+A redefinição de rede avançada pode interromper uma conexão remota e afetar IP fixo ou VPN. Use o módulo básico para atendimento de DNS em interfaces com IP fixo. O módulo avançado registra a configuração anterior em um arquivo com `IPBackup` no nome, para consulta em uma restauração manual.
 
-## 🚀 Como Usar
+<a name="navegadores"></a>
 
-### ⚙️ Passo 1: Preparação
-1. Copie a pasta para a máquina de destino.
-2. Identifique o problema para escolher o módulo.
+## 🌐 Backup de navegadores
 
-### 🛠️ Passo 2: Execução
-1. Entre na pasta do módulo desejado.
-2. Execute o arquivo `.bat` correspondente (ex: `Run-DriverManagement.bat`).
-3. O Windows solicitará privilégios de Administrador.
+O módulo de navegadores fecha os processos durante a restauração. O backup cobre os favoritos. A exportação de senhas deve ser feita pelo navegador quando estiver autorizada.
 
----
+<a name="drivers"></a>
 
-## 🌐 Browser Backup
-Gerencie favoritos dos navegadores **Google Chrome** e **Microsoft Edge**.
+## 🔧 Gerenciamento de drivers
 
-> [!IMPORTANT]
-> As senhas **NÃO** são copiadas devido à criptografia DPAPI do Windows. Devem ser exportadas manualmente.
+O módulo exporta os drivers da máquina com DISM. Na restauração, o PnPUtil instala os arquivos `.inf` de um backup selecionado.
 
-* **Backup:** Organiza favoritos por Navegador e Perfil (suporte a múltiplos perfis).
-* **Restauração:** Fecha os processos do navegador automaticamente para garantir a integridade dos arquivos.
+<a name="logs-e-auditoria"></a>
 
----
+## 🔒 Logs e auditoria
 
-## 🔧 Driver Management
-Backup e restauração completa de drivers usando as ferramentas nativas `DISM` e `PnPUtil`.
-
-* **Backup:** Extrai todos os drivers `/online` para uma pasta organizada com timestamp.
-* **Restauração:** Injeta drivers em massa (`.inf`) a partir de um backup anterior.
-
----
-
-## 🛠️ Resumo de Módulos de Reparo
-
-| Módulo | Quando usar? | Impacto |
-| :--- | :--- | :--- |
-| **WindowsRepair** | Lentidão ou erros de arquivos corrompidos. | Baixo |
-| **NetworkRepair** | Problemas de DNS ou navegação simples. | Seguro (Mantém IP Fixo) |
-| **AdvancedNetwork** | Falhas graves de conexão/VPN. | **Alto (Apaga IP Fixo)** |
-| **ADPolicySync** | Erros de permissão em rede ou senhas. | Médio |
-| **PrintRepair** | Impressora travada ou erro no spooler. | Baixo |
-
----
-
-## 🔒 Segurança e Auditoria
-Toda execução gera um log detalhado na pasta `/Logs`. Se o problema persistir e precisar de escalonamento para N3, anexe o log ao ticket.
-
-**Padrão do Log:** `[Usuario]_[Modulo]_[IP]_[Data_Hora].log`
-
-### 💾 Recuperação (IP Backup)
-Ao usar o `AdvancedNetworkRepair`, um arquivo `IPBackup.txt` é gerado. Use-o para recuperar manualmente configurações de IP Fixo caso necessário.
+As transcrições ficam em `Logs/` na raiz do toolkit. Em caso de erro ao criar a pasta, os scripts recorrem a `%TEMP%\IT_Toolkit_Logs`. Os nomes incluem usuário, módulo, IP e data e hora. O módulo de reparo do Windows interrompe as etapas seguintes se DISM ou SFC falhar. O código de saída `3010` indica que o Windows precisa reiniciar antes da etapa SFC. Antes de anexar o log ao ticket, confira o resultado de cada comando.
 
 <div align="center">
 
