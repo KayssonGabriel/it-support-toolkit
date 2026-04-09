@@ -34,10 +34,70 @@ O toolkit é organizado para garantir que cada intervenção seja isolada e audi
 /
 ├── Logs/                    (Criada automaticamente: auditoria e transcrições)
 ├── ADPolicySync/            (Sincronização Kerberos e GPOs)
-├── AdvancedNetworkRepair/   (Reset profundo de TCP/IP e Winsock)
-├── BrowserBackup/           (NOVO: Backup/Restauro de Favoritos Chrome/Edge)
-├── DriverManagement/        (NOVO: Backup e Injeção de Drivers via DISM)
+├── AdvancedNetworkRepair/   (Redefinição profunda: Winsock, TCP/IP e IP Release/Renew (Obs.: não utilize caso possua IP fixo ou VPN configurada))
+├── BrowserBackup/           (Backup/Restauro de Favoritos Chrome/Edge)
+├── DriverManagement/        (Backup e Injeção de Drivers via DISM)
 ├── NetworkRepair/           (Manutenção segura de DNS - Ideal para IP Fixo)
 ├── PrintRepair/             (Limpeza de Spooler de Impressão)
 └── WindowsRepair/           (Reparo de imagem SFC e DISM)
 ```
+
+## 🚀 Como Usar (POP)
+
+### ⚙️ Passo 1: Preparação
+1. Copie a pasta para a máquina de destino.
+2. Identifique o problema para escolher o módulo.
+
+### 🛠️ Passo 2: Execução
+1. Entre na pasta do módulo desejado.
+2. Execute o arquivo `.bat` correspondente (ex: `Run-DriverManagement.bat`).
+3. O Windows solicitará privilégios de Administrador.
+
+---
+
+## 🌐 Browser Backup
+Gerencie favoritos dos navegadores **Google Chrome** e **Microsoft Edge**.
+
+> [!IMPORTANT]
+> As senhas **NÃO** são copiadas devido à criptografia DPAPI do Windows. Devem ser exportadas manualmente.
+
+* **Backup:** Organiza favoritos por Navegador e Perfil (suporte a múltiplos perfis).
+* **Restauração:** Fecha os processos do navegador automaticamente para garantir a integridade dos arquivos.
+
+---
+
+## 🔧 Driver Management
+Backup e restauração completa de drivers usando as ferramentas nativas `DISM` e `PnPUtil`.
+
+* **Backup:** Extrai todos os drivers `/online` para uma pasta organizada com timestamp.
+* **Restauração:** Injeta drivers em massa (`.inf`) a partir de um backup anterior.
+
+---
+
+## 🛠️ Resumo de Módulos de Reparo
+
+| Módulo | Quando usar? | Impacto |
+| :--- | :--- | :--- |
+| **WindowsRepair** | Lentidão ou erros de arquivos corrompidos. | Baixo |
+| **NetworkRepair** | Problemas de DNS ou navegação simples. | Seguro (Mantém IP Fixo) |
+| **AdvancedNetwork** | Falhas graves de conexão/VPN. | **Alto (Apaga IP Fixo)** |
+| **ADPolicySync** | Erros de permissão em rede ou senhas. | Médio |
+| **PrintRepair** | Impressora travada ou erro no spooler. | Baixo |
+
+---
+
+## 🔒 Segurança e Auditoria
+Toda execução gera um log detalhado na pasta `/Logs`. Se o problema persistir e precisar de escalonamento para N3, anexe o log ao ticket.
+
+**Padrão do Log:** `[Usuario]_[Modulo]_[IP]_[Data_Hora].log`
+
+### 💾 Recuperação (IP Backup)
+Ao usar o `AdvancedNetworkRepair`, um arquivo `IPBackup.txt` é gerado. Use-o para recuperar manualmente configurações de IP Fixo caso necessário.
+
+<div align="center">
+
+<br/>
+
+**Desenvolvido para agilizar o suporte técnico com segurança e transparência.**
+
+</div>
