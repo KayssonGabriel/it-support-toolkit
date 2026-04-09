@@ -42,7 +42,7 @@ O toolkit é organizado para garantir que cada intervenção seja isolada e audi
 └── WindowsRepair/           (Reparo de imagem SFC e DISM)
 ```
 
-## 🚀 Como Usar (POP)
+## 🚀 Como Usar
 
 ### ⚙️ Passo 1: Preparação
 1. Copie a pasta para a máquina de destino.
